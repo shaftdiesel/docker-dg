@@ -1,13 +1,15 @@
-FROM ubuntu
-MAINTAINER Tim Fowler tim@roobixx.com
+FROM debian
 
+RUN apt-get update \
+ && apt-get install -y dansguardian \
+ && mv /etc/dansguardian/dansguardian.conf /etc/dansguardian/dansguardian.conf.dist \
+ && rm -rf /var/lib/apt/lists/* # 20140928
 
-RUN echo deb http://archive.ubuntu.com/ubuntu/ precise main universe > /etc/apt/sources.list.d/precise.list
-RUN apt-get update -q
-RUN apt-get install -qy dansguardian squid
+ADD dansguardian.conf /etc/dansguardian/dansguardian.conf
 
-ADD ./bin /usr/local/sbin
+ADD start /start
+RUN chmod 755 /start
 
-EXPOSE 8080/tcp
+EXPOSE 8080
 
-CMD run
+CMD ["/start"]

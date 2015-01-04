@@ -1,0 +1,6 @@
+#!/bin/bash
+### Dansguardian Settings
+PROXYIP=${SQUID_PORT_3128_TCP_ADDR:-127.0.0.1}
+
+sed 's/{{PROXYIP}}/'"${PROXYIP}"'/' -i /etc/dansguardian/dansguardian.conf
+exec /usr/sbin/dansguardian -N -c /etc/dansguardian/dansguardian.conf
